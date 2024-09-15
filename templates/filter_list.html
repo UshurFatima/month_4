@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+<br><br><br>
+Фильтрация по продуктам
+{% for i in product_eat %}
+<h1>
+    {{ i.name }}
+</h1>
+{% endfor %}
+<br>
+Фильтрация по электронике
+{% for i in product_electronic %}
+<h1>
+    {{ i.name }}
+</h1>
+{% endfor %}
+
+{% include 'footer.html' %}

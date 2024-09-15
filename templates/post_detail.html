@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
+{% include 'header.html' %}
+<link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
 
 <img src="{{ post_id.image.url }}" alt="">
 <h1>{{ post_id.title }}</h1>
@@ -13,5 +9,13 @@
 <p>{{ post_id.news_email }}</p>
 <p>{{ post_id.like_or_dislike }}</p>
 
-</body>
-</html>
+<div class="center">
+    {% for j in post_id.review_post.all %}
+    <p>
+        <h3>{{ j.text_post }}</h3>
+    </p>
+    <p>{{ j.created_at }}</p>
+    {% endfor %}
+</div>
+
+{% include 'footer.html' %}

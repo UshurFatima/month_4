@@ -1,0 +1,10 @@
+{% include '../header.html' %}
+<br><br>
+<center>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Редактировать новость</button>
+</form>
+</center>
+{% include '../footer.html' %}

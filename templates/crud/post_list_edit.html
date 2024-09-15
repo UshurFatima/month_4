@@ -1,0 +1,14 @@
+{% include '../header.html' %}
+<br><br>
+ <center>
+{% for i in post_object %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+    <h5 class="card-title">{{ i.title }}</h5>
+    <a href="/post_list/{{ i.id }}/update/" class="btn btn-primary">Выбрать для редактирования</a>
+  </div>
+</div>
+{% endfor %}
+</center>
+
+{% include '../footer.html' %}

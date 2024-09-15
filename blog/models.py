@@ -23,9 +23,20 @@ class Post(models.Model):
     description = models.TextField(verbose_name='write the text',null=True)
     news_url = models.URLField(verbose_name='write the url of news origin', null=True)
     news_email = models.EmailField(verbose_name='write a contact email address', null=True)
-    like_or_dislike = models.CharField(max_length=200, null=True)
+    like_or_dislike = models.CharField(max_length=200, choices=LIKE_OR_DISLIKE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)  # чтобы время бралось из настроек
 
     # для админа
     def __str__(self):
         return f'{self.title} - {self.created_at}'
+
+
+class Review(models.Model):  # foreignkey - один к многим
+    post_review = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='review_post')
+    # каскад - когда удаляют пост пропадают и отзывы
+    # related_name - ключ к данным (как context)
+    text_post = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.text_post} - {self.created_at}'
