@@ -1,0 +1,11 @@
+{% include '../header.html' %}
+<br><br>
+
+<form method="POST" enctype="multipart/form-data">
+    <h1>Вы точно хотите удалить эту новость?</h1>
+    {% csrf_token %}
+    <button type="submit">Да</button>
+    <button><a href="{% url 'post_list_delete' %}">Назад</a></button>
+</form>
+
+{% include '../footer.html' %}
