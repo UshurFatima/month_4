@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <ol>
+        {% for I in object_list %}
+        <li>
+            <h1>Ник {{ I.username }} </h1>
+            <p>Почта {{ I.email }}</p>
+            <p>Имя {{ I.first_name }}</p>
+            <p>Возраст {{ I.age }}</p>
+            {% if I.club %}
+            <p>Вы принадлежите к клубу {{ I.club }}</p>
+            {% else %}
+            <p>Клуб не определен</p>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+
+<form action="{% url 'users:login' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Выйти</button>
+</form>
+
+</body>
+</html>
