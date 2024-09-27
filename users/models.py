@@ -24,7 +24,6 @@ class CustomUser(User):
 def set_club(sender, instance, created, **kwargs):
     if created:
         print('Сигнал обработан. Пользователь создан')
-
         age = instance.age
         if age < 5:
             instance.club = 'Вы слишком малы'

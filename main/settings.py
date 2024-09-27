@@ -1,4 +1,5 @@
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 
@@ -9,13 +10,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
+load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-or7=^ma*o%ttmh1d=_6&gzd_t!x5mx(9kz3#%e4gvv9%h@=au6'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get('DEBUG') == 'on':
+    DEBUG = True
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -30,6 +35,8 @@ INSTALLED_APPS = [
     'blog',
     'product',
     'users',
+    'debug_toolbar',
+    'parser'
 ]
 
 MIDDLEWARE = [
@@ -41,7 +48,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'users.middlewares.AgeClubMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+                ]
 
 ROOT_URLCONF = 'main.urls'
 

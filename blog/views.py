@@ -1,9 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from django.views import generic
+from django.views.decorators.cache import cache_page
+
 from . import models, forms
+from django.urls import reverse
 
 
+@method_decorator(cache_page(60*15), name='dispatch')
 class SearchView(generic.ListView):
     template_name = 'post_list.html'
     context_object_name = 'post_object'
@@ -18,6 +23,7 @@ class SearchView(generic.ListView):
         return context
 
 
+@method_decorator(cache_page(60*15), name='dispatch')
 class PostUpdateListView(generic.ListView):
     template_name = 'crud/post_list_edit.html'
     context_object_name = 'post_object'
@@ -27,6 +33,7 @@ class PostUpdateListView(generic.ListView):
         return self.model.objects.all(). order_by('-id')
 
 
+@method_decorator(cache_page(60*15), name='dispatch')
 class PostEditView(generic.UpdateView):
     template_name = 'crud/update_post.html'
     form_class = forms.PostForm
@@ -70,6 +77,7 @@ class PostEditView(generic.UpdateView):
 #     )
 
 
+@method_decorator(cache_page(60*15), name='dispatch')
 class PostListDeleteView(generic.ListView):
     template_name = 'crud/post_list_delete.html'
     context_object_name = 'post_object'
@@ -79,6 +87,7 @@ class PostListDeleteView(generic.ListView):
         return self.model.objects.all().order_by('-id')
 
 
+@method_decorator(cache_page(60*15), name='dispatch')
 class PostDropDeleteView(generic.DeleteView):
     template_name = 'crud/confirm_delete.html'
     success_url = '/post_list_delete/'
@@ -107,10 +116,13 @@ class PostDropDeleteView(generic.DeleteView):
 #     return HttpResponse('Новость удалена!!! <a href = "/post_list/">На список новостей</a>')
 
 
+@method_decorator(cache_page(60*15), name='dispatch')
 class PostCreateView(generic.CreateView):
     template_name = 'crud/create_post.html'
     form_class = forms.PostForm
-    success_url = '/post_list/'
+
+    def get_success_url(self):
+        return reverse('blog:post_list')
 
     def form_valid(self, form):
         print(form.cleaned_data)
@@ -135,6 +147,7 @@ class PostCreateView(generic.CreateView):
 
 
 # для полной информации
+@method_decorator(cache_page(60*15), name='dispatch')
 class PostDetailView(generic.DetailView):
     template_name = 'post_detail.html'
     context_object_name = 'post_id'
@@ -157,13 +170,14 @@ class PostDetailView(generic.DetailView):
 
 
 # вывод неполной информации
+@method_decorator(cache_page(60*15), name='dispatch')
 class PostListView(generic.ListView):
     template_name = 'post_list.html'
     context_object_name = 'post_object'
     model = models.Post
 
     def get_queryset(self):
-        return self.model.objects.all().order_by('-id')
+        return self.model.objects.prefetch_related('review_post').all().order_by('-id')
 
 
 # def post_list_view(request):
